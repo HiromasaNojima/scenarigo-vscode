@@ -1,46 +1,48 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import { exec } from "child_process";
-
+import * as vscode from "vscode";
+import { spawn } from "child_process";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    const runScenarigoCommand = vscode.commands.registerCommand(
-      "scenarigo-vscode.runScenarigo",
-      (filePath) => {
-        if (filePath) {
-          // run from code lens
-          runScenarigo(context, filePath);
-          console.log("Scenarigo command executed");
-        } else {
-          // run from command palette
-          const activeEditor = vscode.window.activeTextEditor;
-          if (activeEditor && activeEditor.document.languageId === "yaml") {
-            runScenarigo(context, activeEditor.document.uri.fsPath);
-          }
+  const runScenarigoCommand = vscode.commands.registerCommand(
+    "scenarigo-vscode.runScenarigo",
+    (filePath) => {
+      if (filePath) {
+        // run from code lens
+        runScenarigo(context, filePath);
+        console.log("Scenarigo command executed");
+      } else {
+        // run from command palette
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor && activeEditor.document.languageId === "yaml") {
+          runScenarigo(context, activeEditor.document.uri.fsPath);
         }
       }
-    );
-  
-    const selectConfigPathCommand = vscode.commands.registerCommand(
-      "scenarigo-vscode.selectConfigPath",
-      () => selectConfigPath(context)
-    );
+    }
+  );
 
-    const provider = new ScenarigoCodeLensProvider();
-    context.subscriptions.push(runScenarigoCommand);
-    context.subscriptions.push(selectConfigPathCommand);
-    context.subscriptions.push(
-      vscode.languages.registerCodeLensProvider({ language: "yaml" }, provider)
-    );
+  const selectConfigPathCommand = vscode.commands.registerCommand(
+    "scenarigo-vscode.selectConfigPath",
+    () => selectConfigPath(context)
+  );
+
+  const provider = new ScenarigoCodeLensProvider();
+  context.subscriptions.push(runScenarigoCommand);
+  context.subscriptions.push(selectConfigPathCommand);
+  context.subscriptions.push(
+    vscode.languages.registerCodeLensProvider({ language: "yaml" }, provider)
+  );
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
 
-function runScenarigo(context: vscode.ExtensionContext, filePath: string) {
+async function runScenarigo(
+  context: vscode.ExtensionContext,
+  filePath: string
+) {
   // コマンドの実行
   const selectedConfigPath =
     context.globalState.get<string>("selectedConfigPath");
@@ -50,24 +52,8 @@ function runScenarigo(context: vscode.ExtensionContext, filePath: string) {
     selectConfigPath(context);
     return;
   }
-  
-  exec(
-    `scenarigo run ${filePath} -c ${selectedConfigPath}`,
-    (err, stdout, stderr) => {
-      if (err) {
-        // 実行時のエラー処理
-        console.error(`exec error: ${err}`);
-        return;
-      }
 
-      // 標準出力と標準エラー出力の表示
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
-
-      // 成功時の処理（例：VS Codeの通知）
-      vscode.window.showInformationMessage("Scenarigo executed successfully!");
-    }
-  );
+  runCommandAndAppendToPanel(filePath, selectedConfigPath);
 }
 
 function selectConfigPath(context: vscode.ExtensionContext) {
@@ -90,10 +76,11 @@ function selectConfigPath(context: vscode.ExtensionContext) {
         }
       });
   } else {
-    vscode.window.showInformationMessage("No configuration paths are defined.");
+    vscode.window.showInformationMessage(
+      "Scenarigo: No configuration paths are defined."
+    );
   }
 }
-
 
 class ScenarigoCodeLensProvider implements vscode.CodeLensProvider {
   public provideCodeLenses(
@@ -111,4 +98,54 @@ class ScenarigoCodeLensProvider implements vscode.CodeLensProvider {
     };
     return [new vscode.CodeLens(range, command)];
   }
+}
+
+let outputPanel: vscode.WebviewPanel | undefined;
+
+function createOutputPanel() {
+  // 既にパネルが存在する場合はそれを使用
+  if (outputPanel) {
+    outputPanel.reveal(vscode.ViewColumn.Two);
+    return outputPanel;
+  }
+
+  // 新しい Webview Panel を作成
+  outputPanel = vscode.window.createWebviewPanel(
+    "outputPanel", // 識別子
+    "Command Output", // パネルのタイトル
+    vscode.ViewColumn.Two // パネルを表示するカラム（Two は右側を意味する）
+  );
+
+  // パネルが閉じられたときの処理
+  outputPanel.onDidDispose(() => {
+    outputPanel = undefined;
+  }, null);
+
+  return outputPanel;
+}
+
+function appendToOutputPanel(message: string) {
+  const panel = createOutputPanel();
+  const content = `<pre>${message}</pre>`;
+  panel.webview.html += content;
+}
+
+// この関数をコマンドの実行結果を表示するために使用する
+function runCommandAndAppendToPanel(
+  filePath: string,
+  selectedConfigPath: string
+) {
+  const child = spawn("scenarigo", ["run", filePath, "-c", selectedConfigPath]);
+
+  child.stdout.on("data", (data) => {
+    appendToOutputPanel(data.toString());
+  });
+
+  child.stderr.on("data", (data) => {
+    appendToOutputPanel(data.toString());
+  });
+
+  child.on("close", (code) => {
+    appendToOutputPanel(`\nProcess exited with code ${code}`);
+  });
 }
