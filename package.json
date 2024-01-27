@@ -9,15 +9,38 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:yaml"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "scenarigo-vscode.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "scenarigo-vscode.runScenarigo",
+        "title": "Scenarigo: Run"
+      },
+      {
+        "command": "scenarigo-vscode.selectConfigPath",
+        "title": "Scenarigo: Select Config Path"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Scenarigo Configuration",
+      "properties": {
+        "scenarigo.configPaths": {
+          "type": "array",
+          "description": "Paths to scenarigo configuration files",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
