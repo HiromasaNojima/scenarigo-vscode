@@ -1,11 +1,8 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { spawn } from "child_process";
-import { ScenarigoCodeLensProvider } from "./ScenarigoCodeLensProvider";
+import { ScenarigoCodeLensProvider } from "./scenarigoCodeLensProvider";
+import { selectConfigPath } from "./selectConfigPath";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   const runScenarigoCommand = vscode.commands.registerCommand(
     "scenarigo-vscode.runScenarigo",
@@ -37,50 +34,21 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
 
 async function runScenarigo(
   context: vscode.ExtensionContext,
   filePath: string
 ) {
-  // コマンドの実行
   const selectedConfigPath =
     context.globalState.get<string>("selectedConfigPath");
 
   if (!selectedConfigPath) {
-    // 設定ファイルがまだ選択されていなければ選択を促す
     selectConfigPath(context);
     return;
   }
 
   runCommandAndAppendToPanel(filePath, selectedConfigPath);
-}
-
-function selectConfigPath(context: vscode.ExtensionContext) {
-  const configPaths: string[] | undefined = vscode.workspace
-    .getConfiguration()
-    .get("scenarigo.configPaths");
-
-  if (configPaths && configPaths.length > 0) {
-    vscode.window
-      .showQuickPick(configPaths, {
-        placeHolder: "Select a configuration file to use",
-      })
-      .then((selectedConfigPath) => {
-        if (selectedConfigPath) {
-          // グローバルステートに選択した設定ファイルを保存
-          context.globalState.update("selectedConfigPath", selectedConfigPath);
-          vscode.window.showInformationMessage(
-            `Scenarigo: config path set to: ${selectedConfigPath}`
-          );
-        }
-      });
-  } else {
-    vscode.window.showInformationMessage(
-      "Scenarigo: No configuration paths are defined."
-    );
-  }
 }
 
 let outputPanel: vscode.WebviewPanel | undefined;
