@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { spawn } from "child_process";
+import { ScenarigoCodeLensProvider } from "./ScenarigoCodeLensProvider";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -79,24 +80,6 @@ function selectConfigPath(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage(
       "Scenarigo: No configuration paths are defined."
     );
-  }
-}
-
-class ScenarigoCodeLensProvider implements vscode.CodeLensProvider {
-  public provideCodeLenses(
-    document: vscode.TextDocument
-  ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-    // ここで、再生ボタンを表示する条件を定義します。
-    // 例えば、ファイルの先頭に再生ボタンを表示する場合：
-    console.log(document.uri.fsPath);
-    console.log(document);
-    const range = new vscode.Range(0, 0, 1, 0); // ファイルの先頭
-    const command = {
-      title: "▶️ Run scenarigo", // ボタンのタイトル
-      command: "scenarigo-vscode.runScenarigo", // 実行するコマンド
-      arguments: [document.uri.fsPath], // コマンドに渡す引数（ここではファイルパス）
-    };
-    return [new vscode.CodeLens(range, command)];
   }
 }
 
