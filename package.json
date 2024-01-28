@@ -16,10 +16,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "scenarigo-vscode.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "scenarigo-vscode.runScenarigo",
         "title": "Scenarigo: Run"
       },
