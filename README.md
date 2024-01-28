@@ -2,9 +2,7 @@
 
 This is the helper tool for [scenarigo](https://github.com/zoncoen/scenarigo) to run scenarigo on VS Code. It allows users to easily run and manage their scenarigo tests directly within the VS Code environment.
 
-https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/831e716d-37ff-421b-b1e4-1280ff4995b3
-
-https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/b80b4af5-636f-4bbc-bc2e-1d4e3d0f2537
+![demo](asset/run-from-code-lens.gif)
 
 ## Requirements
 

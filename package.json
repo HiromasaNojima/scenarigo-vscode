@@ -2,7 +2,7 @@
   "name": "scenarigo-vscode",
   "displayName": "scenarigo-vscode",
   "description": "run scenarios on VScode",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -15,10 +15,6 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "scenarigo-vscode.helloWorld",
-        "title": "Hello World"
-      },
       {
         "command": "scenarigo-vscode.runScenarigo",
         "title": "Scenarigo: Run"
