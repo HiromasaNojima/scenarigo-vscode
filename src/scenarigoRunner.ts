@@ -8,18 +8,41 @@ export class ScenarigoRunner {
 
   constructor(private context: vscode.ExtensionContext) {}
 
-  public runScenarigo(filePath: string) {
+  /**
+   * Runs scenarigo with the specified scenario and config within the global state.
+   * @param scenarioPath The path of the scenarigo scenario file to run.
+   *
+   * `scenarigo run ${scenarioPath} -c  ${selectedConfigPath}`
+   */
+  public runScenarigo(scenarioPath: string) {
     const selectedConfigPath =
       this.context.globalState.get<string>("selectedConfigPath");
     if (!selectedConfigPath) {
+      // show error message to recommend setting a config path
       this.appendToOutputPanel(messageSetConfigPath);
       return;
     }
 
-    this.runCommandAndAppendToPanel(filePath, selectedConfigPath);
+    this.run(scenarioPath, selectedConfigPath);
   }
 
-  private createOutputPanel() {
+  /**
+   * Appends a message to the output panel.
+   *
+   * @param message - The message to be appended.
+   */
+  private appendToOutputPanel(message: string) {
+    const panel = this.getOutputPanel();
+    const content = `<pre>${message}</pre>`;
+    panel.webview.html += content;
+  }
+
+  /**
+   * Retrieves the output panel for displaying scenarigo results.
+   * If the panel already exists, it will be revealed. Otherwise, a new panel will be created.
+   * @returns The output panel.
+   */
+  private getOutputPanel(): vscode.WebviewPanel {
     if (this.outputPanel) {
       this.outputPanel.reveal(vscode.ViewColumn.Two);
       return this.outputPanel;
@@ -38,22 +61,13 @@ export class ScenarigoRunner {
     return this.outputPanel;
   }
 
-  private appendToOutputPanel(message: string) {
-    const panel = this.createOutputPanel();
-    const content = `<pre>${message}</pre>`;
-    panel.webview.html += content;
-  }
-
-  private runCommandAndAppendToPanel(
-    filePath: string,
-    selectedConfigPath: string
-  ) {
-    const child = spawn("scenarigo", [
-      "run",
-      filePath,
-      "-c",
-      selectedConfigPath,
-    ]);
+  /**
+   * Runs the scenarigo command with the specified scenario and config paths.
+   * @param scenarioPath - The path to the scenario file.
+   * @param configPath - The path to the config file.
+   */
+  private run(scenarioPath: string, configPath: string) {
+    const child = spawn("scenarigo", ["run", scenarioPath, "-c", configPath]);
 
     child.stdout.on("data", (data) => {
       this.appendToOutputPanel(data.toString());
