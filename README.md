@@ -1,74 +1,67 @@
-**Under Development**
-
-
 # scenarigo-vscode README
 
-This is the README for your extension "scenarigo-vscode". After writing up a brief description, we recommend including the following sections.
+This is the helper tool for [scenarigo](https://github.com/zoncoen/scenarigo) to run scenarigo on VS Code. It allows users to easily run and manage their scenarigo tests directly within the VS Code environment.
 
-## Features
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/e2b414fe-f501-44dc-a586-5f91cf4fa602
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/c43103b0-bfb3-466c-b74a-e9e03b8dcb6a
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This extension requires scenarigo to be installed on your system. 
+How to install scenarigo is [here](https://github.com/zoncoen/scenarigo?tab=readme-ov-file#installation)
 
-## Extension Settings
+## Features
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- **Run Scenarigo Tests**: With a simple click or command, you can run scenarigo tests on your YAML files. This feature is accessible through the CodeLens interface at the top of your document or via the command palette.
 
-For example:
+- **Select Configuration Path**: Customize your test runs by selecting different configuration paths. This is especially useful for projects with multiple scenarigo configurations. You can set and change the configuration path from the command palette.
 
-This extension contributes the following settings:
+- **Output Panel**: Get real-time feedback on your test runs. The extension provides an output panel where you can see the test results, including any stdout or stderr outputs, as well as the exit code of the scenarigo process.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- **Easy Access to Commands**: The extension contributes commands to the VS Code command palette, making it easy to run tests and select configuration paths without leaving your keyboard.
+
+## How to Use
+
+### 1. Set scenarigo.configPaths and select which configuration path to use
+
+1. Open the command palette and type "Preferences: Open Settings (JSON)".
+2. Add the following to your settings.json file:
+
+```json
+{
+  "scenarigo.configPaths": [
+    "path/to/your/scenarigo.yaml"
+  ]
+}
+```
+
+3. Open the command palette and type "Scenarigo: Select Config Path".
+4. Choose a configuration path from the list of available options. These options are defined in your workspace settings under `scenarigo.configPaths`.
+
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/a5f042d7-ab5c-4958-ad72-81bc84ac2d46
+
+### 2. Running Scenarigo Tests
+
+1. Open a YAML file containing your scenarigo test.
+2. Click on the "▶️ Run scenarigo" CodeLens at the top of the document, or open the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and type "Scenarigo: Run".
+3. The test will run, and you can view the results in the output panel titled "Scenarigo".
+
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/e2b414fe-f501-44dc-a586-5f91cf4fa602
+
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/c43103b0-bfb3-466c-b74a-e9e03b8dcb6a
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Currently, there are no known issues. Please report any issues or feature requests on the GitHub repository.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
+Initial release of scenarigo-vscode
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Run scenarigo tests from VS Code.
+- Select different scenarigo configuration paths.
+- View test results in a dedicated output panel.

@@ -11,7 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
       (filePath) => {
         if (filePath) {
           // run from code lens
-          runner.runScenarigo(filePath.fsPath);
+          runner.runScenarigo(filePath);
         } else {
           // run from command palette
           const activeEditor = vscode.window.activeTextEditor;
