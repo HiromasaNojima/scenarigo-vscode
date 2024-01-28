@@ -26,8 +26,8 @@ export class ScenarigoRunner {
     }
 
     this.outputPanel = vscode.window.createWebviewPanel(
-      "outputPanel",
-      "Command Output",
+      "outputPanel", // identifier of the panel
+      "Scenarigo", // title displayed in the panel header
       vscode.ViewColumn.Two
     );
 
