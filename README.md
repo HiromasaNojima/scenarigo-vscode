@@ -2,10 +2,9 @@
 
 This is the helper tool for [scenarigo](https://github.com/zoncoen/scenarigo) to run scenarigo on VS Code. It allows users to easily run and manage their scenarigo tests directly within the VS Code environment.
 
-https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/e2b414fe-f501-44dc-a586-5f91cf4fa602
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/831e716d-37ff-421b-b1e4-1280ff4995b3
 
-https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/c43103b0-bfb3-466c-b74a-e9e03b8dcb6a
-
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/b80b4af5-636f-4bbc-bc2e-1d4e3d0f2537
 
 ## Requirements
 
@@ -48,9 +47,10 @@ https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/a5f042d7-ab5c
 2. Click on the "▶️ Run scenarigo" CodeLens at the top of the document, or open the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and type "Scenarigo: Run".
 3. The test will run, and you can view the results in the output panel titled "Scenarigo".
 
-https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/e2b414fe-f501-44dc-a586-5f91cf4fa602
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/831e716d-37ff-421b-b1e4-1280ff4995b3
 
-https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/c43103b0-bfb3-466c-b74a-e9e03b8dcb6a
+https://github.com/HiromasaNojima/scenarigo-vscode/assets/67505578/b80b4af5-636f-4bbc-bc2e-1d4e3d0f2537
+
 
 ## Known Issues
 
