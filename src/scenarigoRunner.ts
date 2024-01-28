@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { spawn } from "child_process";
 
-const messageSetConfigPath = `No configuration path is set. \nSet one from the command palette "Scenarigo: Select Config Path".`;
+export const messageSetConfigPath = `No configuration path is set. \nSet one from the command palette "Scenarigo: Select Config Path".`;
 
 export class ScenarigoRunner {
   private outputPanel: vscode.WebviewPanel | undefined;
@@ -80,5 +80,9 @@ export class ScenarigoRunner {
     child.on("close", (code) => {
       this.appendToOutputPanel(`\nProcess exited with code ${code}`);
     });
+  }
+
+  public getDisplayedOutput(): string {
+    return this.getOutputPanel().webview.html;
   }
 }
